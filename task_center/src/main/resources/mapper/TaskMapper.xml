@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lezhi.sts.mapper.TaskMapper">
+    <resultMap id="BaseResultMap" type="com.lezhi.sts.model.Task">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="status" property="status"/>
+        <result column="start_time" property="startTime"/>
+        <result column="timeout" property="timeout"/>
+        <result column="group" property="group"/>
+        <result column="submitter" property="submitter"/>
+        <result column="performer" property="performer"/>
+        <result column="param" property="param"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.lezhi.sts.model.Task">
+        insert into `task` (id, `name`, status, start_time,create_time,
+        timeout, `group`, submitter,
+        performer, `param`)
+        values (#{id}, #{name}, #{status}, #{startTime},#{createTime},
+        #{timeout}, #{group}, #{submitter},
+        #{performer},
+        #{param})
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="fetchOneTask" resultMap="BaseResultMap">
+    select * from `task`
+    where
+    (status = 10 and performer is null)
+    OR
+    (status = 30 and performer != #{performer})
+    limit 1
+  </select>
+
+    <update id="startTask">
+    update `task` t set performer = #{performer}, status = 20, start_time = #{startTime}
+    where id = #{id}
+    and
+    (
+        (status = 10 and performer is null)
+        OR
+        (status = 30 and performer != #{performer})
+        OR
+        (status = 70 and performer != #{performer})
+    )
+  </update>
+
+    <update id="finishTask">
+        update `task` t set
+        status = #{status}
+        where id = #{id} and performer = #{performer} and status = 20
+    </update>
+
+    <update id="autoInvalid">
+        UPDATE `task`
+   SET status = 30
+ WHERE (current_timestamp() - start_time) > timeout AND status = 20
+    </update>
+</mapper>

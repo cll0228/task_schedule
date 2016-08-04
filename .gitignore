@@ -1,0 +1,7 @@
+.hg/
+.idea/
+*.iml
+client_api/target/
+common_lib/target/
+task_center/target/
+.hgignore
