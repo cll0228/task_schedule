@@ -43,11 +43,11 @@ public final class TaskService {
     /**
      *
      * @param taskId
-     * @param result 1 success, 2 failed, 3 blocked
+     * @param result 1 success, 2 failed, 3 blocked, 4 later retry
      * @return
      */
     public Integer finishTask(Integer taskId, int result) {
-        if (result < 1 || result > 3) {
+        if (result < 1 || result > 4) {
             throw new IllegalArgumentException();
         }
         FinishTaskParam finishTaskParam = new FinishTaskParam();
