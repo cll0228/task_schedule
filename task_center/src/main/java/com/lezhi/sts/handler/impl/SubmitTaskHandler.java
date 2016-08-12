@@ -14,6 +14,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by dell on 2016/4/22.
  */
@@ -28,19 +32,36 @@ public class SubmitTaskHandler extends ServiceHandler {
 
     @Override
     public void onReplay(RawData rawData) {
-        NetworkUtil.onInt(rawData);
+        //NetworkUtil.onInt(rawData);
     }
 
     @Override
     public void onInquiry(final RawData rawData) {
-        Task param = (Task) SerializeUtil.bytesToObj(rawData.getBody());
-        if (param == null || param.getSubmitter() == null) {
+        List<Task> tasks = new ArrayList<>();
+
+        if (rawData.getType() == Constants.SUBMIT_TASK) {
+            Task param = (Task) SerializeUtil.bytesToObj(rawData.getBody());
+            if (param != null)
+                tasks.add(param);
+        } else if (rawData.getType() == Constants.SUBMIT_TASKS) {
+            Task[] t = (Task[]) SerializeUtil.bytesToObj(rawData.getBody());
+            if (t != null) {
+                Collections.addAll(tasks, t);
+            }
+        } else {
             return;
         }
 
-        taskMapper.insert(param);
+        if (tasks.isEmpty()) {
+            return;
+        }
 
-        NetworkUtil.toInt(rawData, Constants.SUBMIT_TASK, param.getId());
+        for (Task t : tasks) {
+            if (t == null || t.getSubmitter() == null)
+                continue;
+            taskMapper.insert(t);
+        }
+
         logger.debug("receive, seq=" + rawData.getSeq() + ", SubmitTaskHandler#onInquiry");
     }
 }

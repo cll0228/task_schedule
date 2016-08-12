@@ -32,6 +32,7 @@ public class ContainerMonitor implements ApplicationListener<ContextRefreshedEve
         if (event.getApplicationContext().getParent() == null) {
 
             ServiceRegistry.registry(Constants.SUBMIT_TASK, submitTaskHandler);
+            ServiceRegistry.registry(Constants.SUBMIT_TASKS, submitTaskHandler);
             ServiceRegistry.registry(Constants.FETCH_TASK, fetchTaskHandler);
             ServiceRegistry.registry(Constants.FINISH_TASK, finishTaskHandler);
 

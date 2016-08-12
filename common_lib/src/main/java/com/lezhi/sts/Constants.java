@@ -8,6 +8,7 @@ import com.sunshine.ActionCode;
 public class Constants {
 
     public static final int SUBMIT_TASK = ActionCode.AC_USER + 100;
+    public static final int SUBMIT_TASKS = ActionCode.AC_USER + 103;
     public static final int FETCH_TASK = ActionCode.AC_USER + 101;
     public static final int FINISH_TASK = ActionCode.AC_USER + 102;
 

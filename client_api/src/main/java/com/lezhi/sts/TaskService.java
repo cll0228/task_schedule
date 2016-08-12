@@ -18,12 +18,20 @@ import java.util.concurrent.TimeUnit;
  */
 public final class TaskService {
 
-    public Integer submitTask(Task task) {
+    public void submitTask(Task task) {
         task.setSubmitter(this.instanceId);
         byte bys[] = SerializeUtil.objToBytes(task);
         RawData mes = RawDataBuilder.build(DeliveryDirection.INQ, -1, Constants.SUBMIT_TASK, bys);
         MailBox.getInstance().addMessageToQueue(mes);
-        return (Integer) SeqSync.getInstance().waitSeq(mes.getSeq());
+    }
+
+    public void submitTasks(Task ...tasks) {
+        for (Task t : tasks) {
+            t.setSubmitter(this.instanceId);
+        }
+        byte bys[] = SerializeUtil.objToBytes(tasks);
+        RawData mes = RawDataBuilder.build(DeliveryDirection.INQ, -1, Constants.SUBMIT_TASKS, bys);
+        MailBox.getInstance().addMessageToQueue(mes);
     }
 
     public Task fetchTask(String group) {
@@ -43,7 +51,7 @@ public final class TaskService {
     /**
      *
      * @param taskId
-     * @param result 1 success, 2 failed, 3 blocked, 4 later retry
+     * @param result TaskStatus index 0 based
      * @return
      */
     public Integer finishTask(Integer taskId, int result) {

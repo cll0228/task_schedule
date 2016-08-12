@@ -1,6 +1,7 @@
 package com.lezhi.sts.handler.impl;
 
 import com.lezhi.sts.Constants;
+import com.lezhi.sts.enums.TaskStatus;
 import com.lezhi.sts.mapper.TaskMapper;
 import com.lezhi.sts.model.FinishTaskParam;
 import com.lezhi.sts.util.NetworkUtil;
@@ -34,28 +35,15 @@ public class FinishTaskHandler extends ServiceHandler {
         }
         boolean success;
 
-        int status = 0;
-        switch (param.getResultCode()) {
-            case 1:
-                status = 40;
-                break;
-            case 2:
-                status = 50;
-                break;
-            case 3:
-                status = 70;
-                break;
-            case 4:
-                status = 80;
-                break;
-        }
-        int count = taskMapper.finishTask(param.getTaskId(), param.getTaskInstanceId(), status);
+        TaskStatus taskStatus = TaskStatus.values()[param.getResultCode()];
+
+        int count = taskMapper.finishTask(param.getTaskId(), param.getTaskInstanceId(), taskStatus.dbval);
         success = count == 1;
 
         NetworkUtil.toInt(rawData, Constants.FINISH_TASK, success ? 1 : 0);
         logger.debug("ft, receive, seq=" + rawData.getSeq() + ", FinishTaskHandler#onInquiry");
 
-        if (status == 80) {
+        if (taskStatus == TaskStatus.retry) {
             taskMapper.invalidRetryManyTimes(param.getTaskId());
         }
     }
