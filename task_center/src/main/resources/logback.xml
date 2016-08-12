@@ -31,7 +31,10 @@
     <logger name="com.lezhi" level="DEBUG">
     </logger>
 
-    <logger name="com.lezhi.sts.mapper.TaskMapper.autoInvalid" level="ERROR">
+    <logger name="com.lezhi.sts.mapper.TaskMapper.autoInvalid" level="WARN">
+    </logger>
+
+    <logger name="com.lezhi.sts.mapper.TaskMapper.fetchOneTask" level="WARN">
     </logger>
 
     <logger name="com.sunshine" value="DEBUG">

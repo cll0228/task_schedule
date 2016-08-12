@@ -41,6 +41,7 @@ public class FinishTaskHandler extends ServiceHandler {
                 break;
             case 2:
                 status = 50;
+                break;
             case 3:
                 status = 70;
                 break;

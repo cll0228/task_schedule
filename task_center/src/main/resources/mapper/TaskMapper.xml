@@ -51,7 +51,7 @@
 
     <update id="finishTask">
         update `task` t set
-        status = #{status}
+        status = #{status}, finish_time=current_timestamp()
         where id = #{id} and performer = #{performer} and status = 20
     </update>
 
