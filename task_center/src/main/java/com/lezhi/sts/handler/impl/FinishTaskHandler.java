@@ -45,6 +45,9 @@ public class FinishTaskHandler extends ServiceHandler {
             case 3:
                 status = 70;
                 break;
+            case 4:
+                status = 80;
+                break;
         }
         int count = taskMapper.finishTask(param.getTaskId(), param.getTaskInstanceId(), status);
         success = count == 1;

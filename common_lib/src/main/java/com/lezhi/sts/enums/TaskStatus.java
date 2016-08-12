@@ -4,7 +4,7 @@ package com.lezhi.sts.enums;
  * Created by Colin Yan on 2016/7/29.
  */
 public enum TaskStatus {
-    created(10, ""), running(20, ""), timeout(30, ""), success(40, ""), failed(50, ""), canceled(60, ""), giveup(70, "");
+    created(10, ""), running(20, ""), timeout(30, ""), success(40, ""), failed(50, ""), canceled(60, ""), giveup(70, ""), retry(80, "");
 
     public final Integer dbval;
     public final String name;
