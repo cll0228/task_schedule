@@ -16,4 +16,6 @@ public interface TaskMapper {
     int finishTask(@Param("id") Integer id, @Param("performer") String performer, @Param("status") int status);
 
     int autoInvalid();
+
+    void invalidRetryManyTimes(@Param("id") Integer taskId);
 }

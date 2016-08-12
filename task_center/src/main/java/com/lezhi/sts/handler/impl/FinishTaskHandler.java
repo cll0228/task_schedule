@@ -54,5 +54,9 @@ public class FinishTaskHandler extends ServiceHandler {
 
         NetworkUtil.toInt(rawData, Constants.FINISH_TASK, success ? 1 : 0);
         logger.debug("ft, receive, seq=" + rawData.getSeq() + ", FinishTaskHandler#onInquiry");
+
+        if (status == 80) {
+            taskMapper.invalidRetryManyTimes(param.getTaskId());
+        }
     }
 }

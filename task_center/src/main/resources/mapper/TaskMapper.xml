@@ -41,7 +41,7 @@
   </select>
 
     <update id="startTask">
-    update `task` t set performer = #{performer}, status = 20, start_time = #{startTime}
+    update `task` t set performer = #{performer}, status = 20, start_time = #{startTime}, run_times = run_times + 1
     where id = #{id}
     and
     (
@@ -63,5 +63,11 @@
         UPDATE `task`
    SET status = 30
  WHERE (current_timestamp() - start_time) > timeout AND status = 20
+    </update>
+
+    <update id="invalidRetryManyTimes">
+      UPDATE `task`
+      SET status = 60
+      where id = #{id} and run_times > 3
     </update>
 </mapper>
