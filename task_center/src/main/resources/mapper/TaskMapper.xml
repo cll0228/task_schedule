@@ -33,6 +33,8 @@
     (status = 10 and performer is null)
     OR
     (status = 30 and performer != #{performer})
+    OR
+    (status = 70 and performer != #{performer})
     limit 1
   </select>
 
