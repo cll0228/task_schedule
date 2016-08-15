@@ -1,5 +1,6 @@
 package com.lezhi.sts;
 
+import com.lezhi.sts.enums.TaskStatus;
 import com.lezhi.sts.model.FetchTaskParam;
 import com.lezhi.sts.model.FinishTaskParam;
 import com.lezhi.sts.model.Task;
@@ -51,16 +52,14 @@ public final class TaskService {
     /**
      *
      * @param taskId
-     * @param result TaskStatus index 0 based
+     * @param taskStatus TaskStatus
      * @return
      */
-    public Integer finishTask(Integer taskId, int result) {
-        if (result < 1 || result > 4) {
-            throw new IllegalArgumentException();
-        }
+    public Integer finishTask(Integer taskId, TaskStatus taskStatus) {
+
         FinishTaskParam finishTaskParam = new FinishTaskParam();
         finishTaskParam.setTaskId(taskId);
-        finishTaskParam.setResultCode(result);
+        finishTaskParam.setResultCode(taskStatus.ordinal());
         finishTaskParam.setTaskInstanceId(this.instanceId);
         byte bys[] = SerializeUtil.objToBytes(finishTaskParam);
         RawData mes = RawDataBuilder.build(DeliveryDirection.INQ, -1, Constants.FINISH_TASK, bys);
