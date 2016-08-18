@@ -11,9 +11,9 @@
 
 	<modules>
 
-        <module>client_api</module>
+        <module>sts_client_api</module>
         <module>task_center</module>
-        <module>common_lib</module>
+        <module>sts_common_lib</module>
     </modules>
 
     <properties>
