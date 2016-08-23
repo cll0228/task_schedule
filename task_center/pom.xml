@@ -13,7 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>com.lezhi</groupId>
-            <artifactId>common_lib</artifactId>
+            <artifactId>sts_common_lib</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
