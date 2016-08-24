@@ -36,7 +36,6 @@
 
     <logger name="com.lezhi.sts.handler.impl.FetchTaskHandler" level="WARN"/>
 
-    <logger name="com.sunshine" level="WARN"/>
     <logger name="com.lezhi.sts.mapper.TaskMapper" level="WARN"/>
 
 </configuration>

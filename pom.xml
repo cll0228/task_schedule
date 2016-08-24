@@ -10,8 +10,6 @@
 	<packaging>pom</packaging>
 
 	<modules>
-
-        <module>sts_client_api</module>
         <module>task_center</module>
         <module>sts_common_lib</module>
     </modules>
@@ -20,6 +18,7 @@
         <spring.version>4.0.6.RELEASE</spring.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
 
     <build>
         <plugins>
