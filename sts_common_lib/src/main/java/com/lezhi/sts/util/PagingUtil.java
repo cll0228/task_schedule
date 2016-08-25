@@ -10,7 +10,7 @@ public class PagingUtil {
 
 
     public interface CallbackCollection<T> {
-        boolean onPage(int pageNo, Collection<T> sub, int begin, int end, int realPageSize, int pageSize, boolean isFirst, boolean isLast, int totalSize, int pageCount);
+        boolean onPage(int pageNo, Collection<T> sub, int begin, int end, int realPageSize, int pageSize, boolean isFirst, boolean isLast, int totalSize, int pageCount) throws Exception;
     }
 
     public static <T> void pageCollection(Collection<T> collection, int pageSize, CallbackCollection<T> callback) {
@@ -39,27 +39,35 @@ public class PagingUtil {
                 }
                 sub.add(it.next());
             }
-            if (!callback.onPage(i + 1, sub, begin, end, end - begin, pageSize, i == 0, i == pageCount - 1, totalSize, pageCount))
+            try {
+                if (!callback.onPage(i + 1, sub, begin, end, end - begin, pageSize, i == 0, i == pageCount - 1, totalSize, pageCount))
+                    break;
+            } catch (Exception e) {
                 break;
+            }
         }
     }
 
     public interface CallbackIndex {
-        boolean onPage(int pageNo, int begin, int end, int realPageSize, int pageSize, boolean isFirst, boolean isLast, int totalSize, int pageCount) throws IOException;
+        boolean onPage(int pageNo, int begin, int end, int realPageSize, int pageSize, boolean isFirst, boolean isLast, int totalSize, int pageCount) throws Exception;
     }
 
-    public static void pageIndex(int totalSize, int pageSize, CallbackIndex callbackIndex) throws IOException {
+    public static void pageIndex(int totalSize, int pageSize, CallbackIndex callbackIndex) {
 
         final int pageCount = totalSize / pageSize + (totalSize % pageSize > 0 ? 1 : 0);
         for (int i = 0; i < pageCount; i++) {
             final int begin = i * pageSize;
             final int end = i == pageCount - 1 ? totalSize : begin + pageSize;
-            if (!callbackIndex.onPage(i + 1, begin, end, end - begin, pageSize, i == 0, i == pageCount - 1, totalSize, pageCount))
+            try {
+                if (!callbackIndex.onPage(i + 1, begin, end, end - begin, pageSize, i == 0, i == pageCount - 1, totalSize, pageCount))
+                    break;
+            } catch (Exception e) {
                 break;
+            }
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             list.add(i + 1);

@@ -8,12 +8,14 @@ import com.lezhi.sts.model.Task;
  */
 public interface TaskService {
 
+    String helo();
+
     public void submitTask(Task task);
 
     public void submitTasks(Task... tasks);
 
     public Task fetchTask(String group, String performer);
 
-    public Integer finishTask(Integer taskId, String performer, TaskStatus taskStatus);
+    public boolean finishTask(Integer taskId, String performer, TaskStatus taskStatus);
 
 }

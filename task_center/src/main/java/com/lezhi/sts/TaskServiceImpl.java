@@ -15,7 +15,12 @@ import java.util.Date;
 public class TaskServiceImpl implements TaskService {
 
     @Override
-    public void submitTask(com.lezhi.sts.model.Task task) {
+    public String helo() {
+        return "good1";
+    }
+
+    @Override
+    public void submitTask(Task task) {
         if (task.getSubmitter() == null)
             return;
 
@@ -23,7 +28,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void submitTasks(com.lezhi.sts.model.Task... tasks) {
+    public void submitTasks(Task... tasks) {
         for (Task t : tasks) {
             if (t == null || t.getSubmitter() == null)
                 continue;
@@ -33,7 +38,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public com.lezhi.sts.model.Task fetchTask(String group, String performer) {
+    public Task fetchTask(String group, String performer) {
         Task task;
         boolean success;
 
@@ -47,7 +52,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Integer finishTask(Integer taskId, String performer, TaskStatus taskStatus) {
+    public boolean finishTask(Integer taskId, String performer, TaskStatus taskStatus) {
         boolean success;
 
         int count = taskMapper.finishTask(taskId, performer, taskStatus.dbval);
@@ -57,7 +62,7 @@ public class TaskServiceImpl implements TaskService {
             taskMapper.invalidRetryManyTimes(taskId);
         }
 
-        return success ? 1 : 0;
+        return success;
     }
 
     @Autowired
