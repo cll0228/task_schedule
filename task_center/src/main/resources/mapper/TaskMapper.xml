@@ -30,13 +30,17 @@
     <select id="fetchOneTask" resultMap="BaseResultMap">
     select * from `task`
     where
-    (status = 10 and performer is null)
-    OR
-    (status = 30 and performer != #{performer})
-    OR
-    (status = 70 and performer != #{performer})
-    OR
-    (status = 80)
+    `group` = #{group}
+    AND
+    (
+        (status = 10 and performer is null)
+        OR
+        (status = 30 and performer != #{performer})
+        OR
+        (status = 70 and performer != #{performer})
+        OR
+        (status = 80)
+    )
     limit 1
   </select>
 
