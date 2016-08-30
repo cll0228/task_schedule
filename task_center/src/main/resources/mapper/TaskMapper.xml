@@ -12,16 +12,18 @@
         <result column="performer" property="performer"/>
         <result column="param" property="param"/>
         <result column="create_time" property="createTime"/>
+        <result column="type" property="type"/>
     </resultMap>
 
     <insert id="insert" parameterType="com.lezhi.sts.model.Task">
         insert into `task` (id, `name`, status, start_time,create_time,
         timeout, `group`, submitter,
-        performer, `param`)
+        performer, `param`, `type`)
         values (#{id}, #{name}, #{status}, #{startTime},#{createTime},
         #{timeout}, #{group}, #{submitter},
         #{performer},
-        #{param})
+        #{param},
+        #{type})
         <selectKey keyProperty="id" resultType="int" order="AFTER">
             select LAST_INSERT_ID()
         </selectKey>
@@ -65,8 +67,8 @@
 
     <update id="autoInvalid">
         UPDATE `task`
-   SET status = 30
- WHERE (current_timestamp() - start_time) > timeout AND status = 20
+        SET status = 30
+        WHERE (current_timestamp() - start_time) > timeout AND status = 20
     </update>
 
     <update id="invalidRetryManyTimes">

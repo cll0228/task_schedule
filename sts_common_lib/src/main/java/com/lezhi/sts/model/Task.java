@@ -27,6 +27,17 @@ public final class Task implements Serializable {
     private String submitter;
     private String performer;
 
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /** json */
     private String param;
 
     public Task(String group) {
