@@ -15,7 +15,13 @@ public interface TaskMapper {
 
     int finishTask(@Param("id") Integer id, @Param("performer") String performer, @Param("status") int status);
 
-    int autoInvalid();
+    int autoTimeout();
 
-    void invalidRetryManyTimes(@Param("id") Integer taskId);
+    Integer maxArchiveId();
+
+    int migrateToHistory(@Param("maxId") Integer maxId);
+
+    int removeArchived(@Param("maxId") Integer maxId);
+
+    void invalidRetryManyTimes();
 }

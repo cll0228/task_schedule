@@ -37,11 +37,11 @@
     (
         (status = 10 and performer is null)
         OR
-        (status = 30 and performer != #{performer})
+        (status = 30 and performer != #{performer} and run_times &lt; 3)
         OR
-        (status = 70 and performer != #{performer})
+        (status = 70 and performer != #{performer} and run_times &lt; 3)
         OR
-        (status = 80)
+        (status = 80 and run_times &lt; 3)
     )
     limit 1
   </select>
@@ -65,7 +65,7 @@
         where id = #{id} and performer = #{performer} and status = 20
     </update>
 
-    <update id="autoInvalid">
+    <update id="autoTimeout">
         UPDATE `task`
         SET status = 30
         WHERE (current_timestamp() - start_time) > timeout AND status = 20
@@ -74,6 +74,51 @@
     <update id="invalidRetryManyTimes">
       UPDATE `task`
       SET status = 60
-      where id = #{id} and run_times > 3
+      where
+      status in (30, 70, 80) and run_times >= 3
     </update>
+
+    <select id="maxArchiveId" resultType="java.lang.Integer">
+        select max(id) from `task`
+        WHERE status IN (40, 50, 60)
+    </select>
+
+    <insert id="migrateToHistory" parameterType="java.lang.Integer">
+        INSERT INTO `task_history`(
+        id,
+        `name`,
+        status,
+        start_time,
+        timeout,
+        `group`,
+        submitter,
+        performer,
+        param,
+        create_time,
+        finish_time,
+        run_times,
+        `type`)
+        SELECT
+        id,
+        `name`,
+        status,
+        start_time,
+        timeout,
+        `group`,
+        submitter,
+        performer,
+        param,
+        create_time,
+        finish_time,
+        run_times,
+        `type`
+        FROM `task`
+        WHERE status IN (40, 50, 60) AND id &lt;= #{maxId}
+    </insert>
+
+    <delete id="removeArchived" parameterType="java.lang.Integer">
+        delete from `task`
+        WHERE status IN (40, 50, 60) AND id &lt;= #{maxId}
+    </delete>
+
 </mapper>

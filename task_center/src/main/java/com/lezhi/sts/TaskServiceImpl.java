@@ -58,10 +58,6 @@ public class TaskServiceImpl implements TaskService {
         int count = taskMapper.finishTask(taskId, performer, taskStatus.dbval);
         success = count == 1;
 
-        if (taskStatus == TaskStatus.retry) {
-            taskMapper.invalidRetryManyTimes(taskId);
-        }
-
         return success;
     }
 
