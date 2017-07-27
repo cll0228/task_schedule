@@ -186,11 +186,13 @@
             <artifactId>hessian</artifactId>
             <version>4.0.38</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.codehaus.plexus/plexus-archiver -->
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-archiver</artifactId>
-            <version>1.2</version>
+            <version>2.2</version>
         </dependency>
+
 
     </dependencies>
 
